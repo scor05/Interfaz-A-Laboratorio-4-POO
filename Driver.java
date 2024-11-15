@@ -18,8 +18,8 @@ public class Driver {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setResizable(false);
-        frame.setBackground(new Color(0, 0, 0));
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.getContentPane().setBackground(Color.BLACK);
 
         EventQueue.invokeLater(new Runnable() {
             @Override
