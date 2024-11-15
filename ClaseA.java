@@ -20,7 +20,7 @@ public class ClaseA implements IRadio {
     public ClaseA() {
         this.encendido = false;
         this.volumen = 0;
-        this.modo = 0;
+        this.modo = 1;
         this.frecuencia = 0;
         this.emisora = 0;
         this.playlists = new ArrayList<>();
@@ -44,22 +44,8 @@ public class ClaseA implements IRadio {
     }
 
     public void cambiarModo(int mode) {
-        switch(mode) {
-            case 0:
-                this.modo = 0;
-                break;
-            case 1:
-                this.modo = 1;
-                break;
-            case 2:
-                this.modo = 2;
-                break;
-            case 3:
-                this.modo = 3;
-                break;
-            case 4:
-                this.modo = 4;
-                break;
+        if (!(mode < 0 || mode > 4)) {
+            this.modo = mode;
         }
     }
 

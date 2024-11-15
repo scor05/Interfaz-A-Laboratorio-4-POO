@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 public class Driver {
     public static void main(String[] args) {
@@ -21,6 +22,10 @@ public class Driver {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.getContentPane().setBackground(Color.BLACK);
         frame.setLayout(null);
+
+        UIManager.put("Button.select", Color.BLACK);
+		UIManager.put("Button.focus", Color.BLACK);
+        UIManager.put("ScrollPane.border", new LineBorder(Color.RED, 4));
 
         EventQueue.invokeLater(new Runnable() {
             @Override
