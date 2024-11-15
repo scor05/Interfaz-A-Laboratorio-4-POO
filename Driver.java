@@ -20,6 +20,7 @@ public class Driver {
         frame.setResizable(false);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.getContentPane().setBackground(Color.BLACK);
+        frame.setLayout(null);
 
         EventQueue.invokeLater(new Runnable() {
             @Override
