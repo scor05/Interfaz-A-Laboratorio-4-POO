@@ -26,8 +26,8 @@ public class Driver {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    vistaRadio vista = new vistaRadio();
-                    vista.offMenu(frame, radio);
+                    vistaRadio vista = new vistaRadio(radio);
+                    vista.drawMainButtons(frame);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
