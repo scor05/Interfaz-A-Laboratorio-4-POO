@@ -56,7 +56,7 @@ public class ClaseA implements IRadio {
             setFrecuencia(2);
         }
     }
-
+	
     public void cambiarEmi(double emisora) {
         setEmisora(emisora);
     }
@@ -152,7 +152,21 @@ public class ClaseA implements IRadio {
     public void setViaje(String viaje) {
         this.viaje = viaje;
     }
-
+	
+	public String getModoConvertido(){
+		if(modo==1){
+			return "Radio";
+		}
+		else if(modo==2){
+			return "Reproducción";
+		}
+		else if(modo==3){
+			return "Telefono";
+		}
+		else{
+			return "Productividad";
+		}
+	}
 
     @Override
     public String toString() {

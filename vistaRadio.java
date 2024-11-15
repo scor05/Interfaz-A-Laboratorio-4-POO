@@ -33,28 +33,13 @@ public class vistaRadio {
         Image offBtnImgHover = new ImageIcon(getClass().getResource("/resources/img/offBtnHover.png")).getImage();
         Image onBtnImg = new ImageIcon(getClass().getResource("/resources/img/onBtn.png")).getImage();
         Image onBtnImgHover = new ImageIcon(getClass().getResource("/resources/img/onBtnHover.png")).getImage();
-
-        String modoString;
-        switch (radio.getModo()){
-            case 1:
-                modoString = "Radio";
-                break;
-            case 2:
-                modoString = "Reproducción";
-                break;
-            case 3:
-                modoString = "Teléfono";
-                break;
-            case 4:
-                modoString = "Productividad";
-                break;
-            default:
-                modoString = "Radio";
-        }
-        JLabel modeLbl = new JLabel("Modo actual: " + modoString);
+        
+        JLabel modeLbl = new JLabel("Modo actual: " + radio.getModoConvertido());
         modeLbl.setFont(STATUSFONT);
         modeLbl.setForeground(Color.RED);
         modeLbl.setBounds(660, 200, 800, 141);
+		modeLbl.setBackground(Color.BLACK);
+		modeLbl.setOpaque(true);
         componentes.add(modeLbl);
 
         JLabel eventLabel = new JLabel("Llamando a: ");
@@ -69,36 +54,84 @@ public class vistaRadio {
 
         JButton btnModoRadio = new JButton("Radio");
         btnModoRadio.setFont(BUTTONFONT);
-		btnModoRadio.setBackground(Color.BLACK);
-        btnModoRadio.setContentAreaFilled(false);
+		btnModoRadio.setContentAreaFilled(true);
         btnModoRadio.setForeground(Color.RED);
 		btnModoRadio.setBounds(460, 524, 201, 85);
 		componentes.add(btnModoRadio);
+		btnModoRadio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				radio.setModo(1);
+				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
+				modeLbl.setFont(STATUSFONT);
+				modeLbl.setForeground(Color.RED);
+				modeLbl.setBounds(660, 200, 800, 141);
+				modeLbl.setBackground(Color.BLACK);
+				modeLbl.setOpaque(true);
+				componentes.add(modeLbl);
+			}
+		});
 		
 		JButton btnModoRep = new JButton("Reproducción");
         btnModoRep.setFont(BUTTONFONT);
 		btnModoRep.setBackground(Color.BLACK);
-        btnModoRep.setContentAreaFilled(false);
+        btnModoRep.setContentAreaFilled(true);
         btnModoRep.setForeground(Color.RED);
 		btnModoRep.setBounds(670, 524, 300, 85);
 		componentes.add(btnModoRep);
+		btnModoRep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				radio.setModo(2);
+				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
+				modeLbl.setFont(STATUSFONT);
+				modeLbl.setForeground(Color.RED);
+				modeLbl.setBounds(660, 200, 800, 141);
+				modeLbl.setBackground(Color.BLACK);
+				modeLbl.setOpaque(true);
+				componentes.add(modeLbl);
+			}
+		});
+		
+		JButton btnModoProductividad = new JButton("Productividad");
+		btnModoProductividad.setFont(BUTTONFONT);
+		btnModoProductividad.setBackground(Color.BLACK); 
+		btnModoProductividad.setContentAreaFilled(true); // Similar al resto
+		btnModoProductividad.setForeground(Color.RED);
+		btnModoProductividad.setBounds(1220, 524, 315, 85);
+		componentes.add(btnModoProductividad);
+		btnModoProductividad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				radio.setModo(4);
+				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
+				modeLbl.setFont(STATUSFONT);
+				modeLbl.setForeground(Color.RED);
+				modeLbl.setBounds(660, 200, 800, 141);
+				modeLbl.setBackground(Color.BLACK);
+				modeLbl.setOpaque(true);
+				componentes.add(modeLbl);
+			}
+		});
 		
 		JButton btnModoTelfono = new JButton("Telefono");
         btnModoTelfono.setFont(BUTTONFONT);
 		btnModoTelfono.setBackground(Color.BLACK);
-        btnModoTelfono.setContentAreaFilled(false);
+        btnModoTelfono.setContentAreaFilled(true);
         btnModoTelfono.setForeground(Color.RED);
 		btnModoTelfono.setBounds(980, 524, 230, 85);
 		componentes.add(btnModoTelfono);
+		btnModoTelfono.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				radio.setModo(3);
+				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
+				modeLbl.setFont(STATUSFONT);
+				modeLbl.setForeground(Color.RED);
+				modeLbl.setBounds(660, 200, 800, 141);
+				modeLbl.setBackground(Color.BLACK);
+				modeLbl.setOpaque(true);
+				componentes.add(modeLbl);
+			}
+		});
 		
-		JButton btnModoProductividad = new JButton("Productividad");
-        btnModoProductividad.setFont(BUTTONFONT);
-		btnModoProductividad.setBackground(Color.DARK_GRAY);
-        btnModoProductividad.setOpaque(true);   
-        btnModoProductividad.setForeground(Color.RED);
-		btnModoProductividad.setBounds(1220, 524, 315, 85);
-		componentes.add(btnModoProductividad);
-        
+        //Funcionamiento del botón on/off
         onBtn.setIcon(new ImageIcon(offBtnImg));
         onBtn.setOpaque(false);
         onBtn.setContentAreaFilled(false);
@@ -108,8 +141,8 @@ public class vistaRadio {
 		onBtn.setBounds(780, 49, 360, 141);
         onBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
-                radio.onOff(true);
-                if (radio.isEncendido()){
+                radio.onOff(true); //Cada vez que se presione el botón se cambia su estado
+                if (radio.isEncendido()){ //Si la radio se encendió 'true', se presenta toda la interfaz gráfica de la radio
                     onBtn.setIcon(new ImageIcon(onBtnImg));
                     onBtn.setRolloverIcon(new ImageIcon(onBtnImgHover));
                     onBtn.setPressedIcon(new ImageIcon(onBtnImgHover));
