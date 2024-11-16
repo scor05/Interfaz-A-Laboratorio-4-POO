@@ -8,22 +8,26 @@ import java.util.List;
 public class ClaseA implements IRadio {
     private boolean encendido;
     private int volumen;
-    // (1 modo radio, 2 reproducción, 3 teléfono, 4 productividad)
     private int modo;
+	// (1 modo radio, 2 reproducción, 3 teléfono, 4 productividad)
     private int frecuencia;
     private double emisora;
+    private ArrayList<Double> emisorasGuardadas;
     private ArrayList<ArrayList<String>> playlists;
     private boolean telefono;
     private boolean speakerAuri;
     private ArrayList<String> contactos;
     private String viaje;
+    private static final int MAX_EMISORAS = 50;
+
     
     public ClaseA() {
         this.encendido = false;
         this.volumen = 0;
         this.modo = 0;
-        this.frecuencia = 0;
-        this.emisora = 0;
+        this.frecuencia = 2;
+        this.emisora = 87.9;
+        this.emisorasGuardadas = new ArrayList<>();
         this.playlists = new ArrayList<>();
         this.telefono = false;
         this.speakerAuri = false;
@@ -92,18 +96,70 @@ public class ClaseA implements IRadio {
             this.modo = mode;
         }
     }
+	
+	public void siguienteEmisora() {
+        if (frecuencia == 1) { // AM
+            emisora = Math.min(1610, emisora + 10);
+        } else { // FM
+            emisora = Math.min(107.9, emisora + 0.5);
+        }
+    }
+
+    public void anteriorEmisora() {
+        if (frecuencia == 1) { // AM
+            emisora = Math.max(530, emisora - 10);
+        } else { // FM
+            emisora = Math.max(87.9, emisora - 0.5);
+        }
+    }
+
+    public void guardarEmisora() {
+        if (emisorasGuardadas.size() < MAX_EMISORAS && !emisorasGuardadas.contains(emisora)) {
+            emisorasGuardadas.add(emisora);
+        }
+    }
+
+    public void cargarEmisora() {
+        if (!emisorasGuardadas.isEmpty()) {
+            // Encuentra la siguiente emisora guardada más cercana a la actual
+            double emisoraCercana = emisorasGuardadas.get(0);
+            double diferenciaMínima = Math.abs(emisora - emisoraCercana);
+
+            for (double emisoraGuardada : emisorasGuardadas) {
+                double diferencia = Math.abs(emisora - emisoraGuardada);
+                if (diferencia < diferenciaMínima) {
+                    diferenciaMínima = diferencia;
+                    emisoraCercana = emisoraGuardada;
+                }
+            }
+            emisora = emisoraCercana;
+        }
+    }
+	
+	public void cargarEmisoraEspecifica(double emisoraSeleccionada) {
+        if (modo == 1) {
+            this.emisora = emisoraSeleccionada;
+        }
+    }
+
+    // Método para obtener la lista de emisoras guardadas
+    public ArrayList<Double> getEmisorasGuardadas() {
+        return this.emisorasGuardadas;
+    }
+	public void cambiarEmi(double emisora) {
+        setEmisora(emisora);
+    }
 
     public void amFm(boolean value) {
         if (value) {
             setFrecuencia(1);
-        }else {
+            emisora = 530; // Frecuencia AM inicial
+        } else {
             setFrecuencia(2);
+            emisora = 87.9; // Frecuencia FM inicial
         }
     }
 	
-    public void cambiarEmi(double emisora) {
-        setEmisora(emisora);
-    }
 
     public boolean isEncendido() {
         return this.encendido;
@@ -214,15 +270,13 @@ public class ClaseA implements IRadio {
         }
 	}
 	
-	public String frecuenciaConvertida(){
-		if(frecuencia ==1){
-			return "AM";
-		}
-		else{	
-			return "FM";
-		}
-		
-	}
+	public String frecuenciaConvertida() {
+        if (frecuencia == 1) {
+            return "AM " + String.format("%.0f", emisora);
+        } else {
+            return "FM " + String.format("%.1f", emisora);
+        }
+    }
 
     @Override
     public String toString() {
