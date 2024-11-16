@@ -132,7 +132,7 @@ public class ClaseA implements IRadio {
                     emisoraCercana = emisoraGuardada;
                 }
             }
-            emisora = emisoraCercana;
+            this.emisora = emisoraCercana;
         }
     }
 	
@@ -146,6 +146,7 @@ public class ClaseA implements IRadio {
     public ArrayList<Double> getEmisorasGuardadas() {
         return this.emisorasGuardadas;
     }
+    
 	public void cambiarEmi(double emisora) {
         setEmisora(emisora);
     }

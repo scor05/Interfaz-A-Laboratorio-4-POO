@@ -2,8 +2,10 @@
  * @version 14/10/2024
  */
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 
 public class vistaRadio {
     private ClaseA radio;
@@ -61,79 +65,7 @@ public class vistaRadio {
         eventLabel.setBackground(Color.BLACK);
         eventLabel.setOpaque(true); 
 		
-		//Boton am y fm
-		JButton am = new JButton("AM/FM");
-		am.setFont(BUTTONFONT);
-		am.setContentAreaFilled(true);
-		am.setForeground(Color.RED);
-		am.setBounds(1350,375,200,100);
-		componentes.add(am);
-		am.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(radio.getFrecuencia()==1){ //Se cambia de am a fm 
-					radio.amFm(false);
-				}
-				else{
-					radio.amFm(true);
-				}
-				eventLabel.setText(radio.frecuenciaConvertida()+" | Esta sonando: ");
-				eventLabel.setFont(EVENTFONT);
-				eventLabel.setForeground(Color.RED);
-				eventLabel.setBackground(Color.BLACK);
-				eventLabel.setOpaque(true); 
-			}
-		});
-
-		JButton nextStation = new JButton(">");
-        nextStation.setFont(BUTTONFONT);
-        nextStation.setContentAreaFilled(true);
-        nextStation.setForeground(Color.RED);
-        nextStation.setBounds(1300, 300, 80, 60);
-        componentes.add(nextStation);
-        nextStation.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                radio.siguienteEmisora();
-                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
-            }
-        });
-
-        JButton prevStation = new JButton("<");
-        prevStation.setFont(BUTTONFONT);
-        prevStation.setContentAreaFilled(true);
-        prevStation.setForeground(Color.RED);
-        prevStation.setBounds(1200, 300, 80, 60);
-        componentes.add(prevStation);
-        prevStation.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                radio.anteriorEmisora();
-                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
-            }
-        });
-
-        // Botones para guardar y cargar emisoras
-        JButton saveStation = new JButton("Guardar");
-        saveStation.setFont(BUTTONFONT);
-        saveStation.setContentAreaFilled(true);
-        saveStation.setForeground(Color.RED);
-        saveStation.setBounds(460, 375, 180, 60);
-        componentes.add(saveStation);
-        saveStation.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                radio.guardarEmisora();
-            }
-        });
-
-        JButton loadStation = new JButton("Cargar");
-        loadStation.setFont(BUTTONFONT);
-        loadStation.setContentAreaFilled(true);
-        loadStation.setForeground(Color.RED);
-        loadStation.setBounds(460, 450, 180, 60);
-        componentes.add(loadStation);
-        loadStation.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mostrarDialogoEmisoras(frame);
-            }
-        });
+		
 		
 		
         JScrollPane eventTextPane = new JScrollPane(eventLabel);
@@ -347,7 +279,6 @@ public class vistaRadio {
                 }
             }
         });
-
         playlistsList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (playlistsList.getSelectedIndex() != -1){
@@ -412,16 +343,17 @@ public class vistaRadio {
     }
 
     public void modoRadio(JFrame frame, JLabel eventLabel){
+        Image backImg = new ImageIcon(getClass().getResource("/resources/img/backPlaylistBtn.png")).getImage();
+        Image backImgHover = new ImageIcon(getClass().getResource("/resources/img/backPlaylistBtnHover.png")).getImage();
+        Image rightBtnImg = new ImageIcon(getClass().getResource("/resources/img/backPlaylistBtnRight.png")).getImage();
+        Image rightBtnImgHover = new ImageIcon(getClass().getResource("/resources/img/backPlaylistBtnHoverRight.png")).getImage();
         //Boton am y fm
+		//Boton am y fm
 		JButton am = new JButton("AM/FM");
 		am.setFont(BUTTONFONT);
 		am.setContentAreaFilled(true);
 		am.setForeground(Color.RED);
-		am.setBounds(1300,375,200,100);
-        componentes.add(am);
-		componentesEspecificos.add(am);
-        frame.getContentPane().add(am);
-        frame.repaint();
+		am.setBounds(1350,375,200,100);
 		am.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(radio.getFrecuencia()==1){ //Se cambia de am a fm 
@@ -431,8 +363,85 @@ public class vistaRadio {
 					radio.amFm(true);
 				}
 				eventLabel.setText(radio.frecuenciaConvertida()+" | Esta sonando: ");
+				eventLabel.setFont(EVENTFONT);
+				eventLabel.setForeground(Color.RED);
+				eventLabel.setBackground(Color.BLACK);
+				eventLabel.setOpaque(true); 
 			}
 		});
+        componentes.add(am);
+        componentesEspecificos.add(am);
+        frame.getContentPane().add(am);
+        frame.repaint();
+
+		JButton nextStation = new JButton();
+        nextStation.setContentAreaFilled(false);
+        nextStation.setOpaque(false);
+        nextStation.setIcon(new ImageIcon(rightBtnImg));
+        nextStation.setBorderPainted(false);
+        nextStation.setRolloverIcon(new ImageIcon(rightBtnImgHover));
+        nextStation.setPressedIcon(new ImageIcon(rightBtnImgHover));
+        nextStation.setBounds(990, 650, 70, 70);
+        nextStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                radio.siguienteEmisora();
+                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+            }
+        });
+        componentes.add(nextStation);
+        componentesEspecificos.add(nextStation);
+        frame.getContentPane().add(nextStation);
+        frame.repaint();
+
+        JButton prevStation = new JButton();
+        prevStation.setContentAreaFilled(false);
+        prevStation.setOpaque(false);
+        prevStation.setIcon(new ImageIcon(backImg));
+        prevStation.setBorderPainted(false);
+        prevStation.setRolloverIcon(new ImageIcon(backImgHover));
+        prevStation.setPressedIcon(new ImageIcon(backImgHover));
+        prevStation.setBounds(900, 650, 70, 70);
+        prevStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                radio.anteriorEmisora();
+                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+            }
+        });
+        componentes.add(prevStation);
+        componentesEspecificos.add(prevStation);
+        frame.getContentPane().add(prevStation);
+        frame.repaint();
+
+        // Botones para guardar y cargar emisoras
+        JButton saveStation = new JButton("Guardar");
+        saveStation.setFont(BUTTONFONT);
+        saveStation.setContentAreaFilled(true);
+        saveStation.setForeground(Color.RED);
+        saveStation.setBounds(460, 375, 180, 60);
+        saveStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                radio.guardarEmisora();
+            }
+        });
+        componentes.add(saveStation);
+        componentesEspecificos.add(saveStation);
+        frame.getContentPane().add(saveStation);
+        frame.repaint();
+
+        JButton loadStation = new JButton("Cargar");
+        loadStation.setFont(BUTTONFONT);
+        loadStation.setContentAreaFilled(true);
+        loadStation.setForeground(Color.RED);
+        loadStation.setBounds(460, 450, 180, 60);
+        loadStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarDialogoEmisoras(frame);
+            }
+        });
+        componentes.add(loadStation);
+        componentesEspecificos.add(loadStation);
+        frame.getContentPane().add(loadStation);
+        frame.repaint();
     }
 
     private static Font cargarFuente(String fontPath, int style, int size) {
@@ -460,7 +469,7 @@ public class vistaRadio {
         // Crear diálogo personalizado
         JDialog dialog = new JDialog(parentFrame, "Seleccionar Emisora", true);
         dialog.setLayout(new BorderLayout());
-        dialog.setSize(300, 400);
+        dialog.setSize(600, 500);
         dialog.setLocationRelativeTo(parentFrame);
 
         // Panel principal con scroll
@@ -475,7 +484,6 @@ public class vistaRadio {
         titleLabel.setForeground(Color.RED);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.add(titleLabel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         // Crear botones para cada emisora guardada
         for (Double emisora : radio.getEmisorasGuardadas()) {
