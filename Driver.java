@@ -26,6 +26,19 @@ public class Driver {
         UIManager.put("Button.select", Color.BLACK);
 		UIManager.put("Button.focus", Color.BLACK);
         UIManager.put("ScrollPane.border", new LineBorder(Color.RED, 4));
+        UIManager.put("TextField.border", new LineBorder(Color.RED, 4));
+        UIManager.put("ScrollPane.border", new LineBorder(Color.RED, 4));
+        UIManager.put("ScrollPane.background", Color.BLACK);
+        UIManager.put("ComboBox.background", Color.BLACK);
+        UIManager.put("ComboBox.foreground", Color.RED);
+        UIManager.put("ComboBox.selectionBackground", Color.DARK_GRAY);
+        UIManager.put("ComboBox.selectionForeground", Color.RED);
+        UIManager.put("ComboBox.border", new LineBorder(Color.RED, 4));
+        UIManager.put("List.background", Color.BLACK);
+        UIManager.put("List.foreground", Color.RED);
+        UIManager.put("List.selectionBackground", Color.DARK_GRAY);
+        UIManager.put("List.selectionForeground", Color.RED);
+        UIManager.put("List.border", new LineBorder(Color.RED, 2));
 
         EventQueue.invokeLater(new Runnable() {
             @Override

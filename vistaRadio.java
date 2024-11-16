@@ -26,6 +26,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -35,10 +36,13 @@ public class vistaRadio {
     private ClaseA radio;
     private ArrayList<Component> componentes = new ArrayList<>();
     private ArrayList<Component> componentesEspecificos = new ArrayList<>();
+
     private final Font STATUSFONT = cargarFuente("/resources/font/digital-7.ttf", Font.PLAIN, 80);
     private final Font EVENTFONT = cargarFuente("/resources/font/digital-7.ttf", Font.PLAIN, 60);
     private final Font BUTTONFONT = cargarFuente("/resources/font/digital-7.ttf", Font.PLAIN, 50);
     private final Font TEXTFONT = cargarFuente("/resources/font/digital-7.ttf", Font.PLAIN, 30);
+    private int volumenActual = 50;
+    private int volumenBackup = 0;
 
     public vistaRadio(ClaseA radio) {
         this.radio = radio;
@@ -63,10 +67,7 @@ public class vistaRadio {
         eventLabel.setFont(EVENTFONT);
         eventLabel.setForeground(Color.RED);
         eventLabel.setBackground(Color.BLACK);
-        eventLabel.setOpaque(true); 
-		
-		
-		
+        eventLabel.setOpaque(true);		
 		
         JScrollPane eventTextPane = new JScrollPane(eventLabel);
 		eventTextPane.setBounds(665, 359, 588, 125);
@@ -89,7 +90,6 @@ public class vistaRadio {
                             frame.remove(c);
                         }
                     }
-                    eventLabel.setText("");
                     frame.repaint();
                     radio.setModo(1);
                     modeLbl.setText("Modo actual: " + radio.getModoConvertido());
@@ -116,7 +116,6 @@ public class vistaRadio {
                             frame.remove(c);
                         }
                     }
-                    eventLabel.setText("");
                     frame.repaint();
                     radio.setModo(2);
                     modeLbl.setText("Modo actual: " + radio.getModoConvertido());
@@ -143,7 +142,6 @@ public class vistaRadio {
                             frame.remove(c);
                         }
                     }
-                    eventLabel.setText("");
                     frame.repaint();
                     radio.setModo(3);
                     modeLbl.setText("Modo actual: " + radio.getModoConvertido());
@@ -169,16 +167,79 @@ public class vistaRadio {
                             frame.remove(c);
                         }
                     }
-                    eventLabel.setText("");
                     frame.repaint();
                     radio.setModo(4);
                     modeLbl.setText("Modo actual: " + radio.getModoConvertido());
                     componentes.add(modeLbl);
+                    modoProductividad(frame, eventLabel);
                 }
 			}
 		});
+
+        
+        Image upVolImage = new ImageIcon(getClass().getResource("/resources/img/UPvol.png")).getImage();
+        Image downVoImage = new ImageIcon(getClass().getResource("/resources/img/DOWNvol.png")).getImage();
+        Image muteVolImage = new ImageIcon(getClass().getResource("/resources/img/MUTEvol.png")).getImage();
 		
-		
+		JLabel volumenLabel = new JLabel("Volumen: " + volumenActual);
+        volumenLabel.setFont(BUTTONFONT);
+        volumenLabel.setBounds(1250,80, 300, 50);
+        volumenLabel.setForeground(Color.RED);
+        volumenLabel.setBackground(Color.BLACK);
+        volumenLabel.setOpaque(true);
+        componentes.add(volumenLabel);
+
+        // Botón para subir volumen
+        JButton upVolButton = new JButton("");
+        upVolButton.setIcon(new ImageIcon(upVolImage));
+        upVolButton.setOpaque(false);
+        upVolButton.setContentAreaFilled(false);
+        upVolButton.setBorderPainted(false);
+        upVolButton.setBounds(1450, 124, 70, 70);
+        upVolButton.addActionListener(e -> {
+            if (volumenActual == 0 && volumenBackup > 0) {
+                volumenActual = volumenBackup;
+            } else if (volumenActual < 100) {
+                volumenActual++;
+            }
+            volumenLabel.setText("Volumen: " + volumenActual);
+        });
+        componentes.add(upVolButton); // se agrega a la lista de componentes
+
+        // Botón para bajar volumen
+        JButton downVolButton = new JButton("");
+        downVolButton.setIcon(new ImageIcon(downVoImage));
+        downVolButton.setOpaque(false);
+        downVolButton.setContentAreaFilled(false);
+        downVolButton.setBorderPainted(false);
+        downVolButton.setBounds(1330, 124, 70, 70);
+        downVolButton.addActionListener(e -> {
+            if (volumenActual == 0 && volumenBackup > 0) {
+                volumenActual = volumenBackup;
+            } else if (volumenActual > 0) {
+                volumenActual--;
+            }
+            volumenLabel.setText("Volumen: " + volumenActual);
+        });
+        componentes.add(downVolButton); // se agrega a la lista de componentes
+
+        // Botón para mutear volumen
+        JButton muteVolButton = new JButton("");
+        muteVolButton.setIcon(new ImageIcon(muteVolImage));
+        muteVolButton.setOpaque(false);
+        muteVolButton.setContentAreaFilled(false);
+        muteVolButton.setBorderPainted(false);
+        muteVolButton.setBounds(1230, 124, 70, 70);
+        muteVolButton.addActionListener(e -> {
+            if (volumenActual != 0) {
+                volumenBackup = volumenActual;
+                volumenActual = 0;
+            } else {
+                volumenActual = volumenBackup;
+            }
+            volumenLabel.setText("Volumen: " + volumenActual);
+        });
+        componentes.add(muteVolButton); // se agrega a la lista de componentes
 		
         //Funcionamiento del botón on/off
         onBtn.setIcon(new ImageIcon(offBtnImg));
@@ -362,7 +423,7 @@ public class vistaRadio {
 				else{
 					radio.amFm(true);
 				}
-				eventLabel.setText(radio.frecuenciaConvertida()+" | Esta sonando: ");
+				eventLabel.setText(radio.frecuenciaConvertida()+" Esta sonando: ");
 				eventLabel.setFont(EVENTFONT);
 				eventLabel.setForeground(Color.RED);
 				eventLabel.setBackground(Color.BLACK);
@@ -385,7 +446,7 @@ public class vistaRadio {
         nextStation.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 radio.siguienteEmisora();
-                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+                eventLabel.setText(radio.frecuenciaConvertida() + " Esta sonando: ");
             }
         });
         componentes.add(nextStation);
@@ -404,7 +465,7 @@ public class vistaRadio {
         prevStation.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 radio.anteriorEmisora();
-                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+                eventLabel.setText(radio.frecuenciaConvertida() + " Esta sonando: ");
             }
         });
         componentes.add(prevStation);
@@ -498,7 +559,7 @@ public class vistaRadio {
                 public void actionPerformed(ActionEvent e) {
                     radio.cargarEmisoraEspecifica(emisora);
                     actualizarInterfaz();
-                    eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+                    eventLabel.setText(radio.frecuenciaConvertida() + " Esta sonando: ");
                     dialog.dispose();
                 }
             });
@@ -526,6 +587,50 @@ public class vistaRadio {
         dialog.setVisible(true);
     }
 
+    private void modoProductividad(JFrame frame, JLabel eventLabel){
+        JLabel destinoLabel = new JLabel("Ingrese su destino:");
+        destinoLabel.setFont(BUTTONFONT);
+        destinoLabel.setForeground(Color.RED);
+        destinoLabel.setBackground(Color.BLACK);
+        destinoLabel.setOpaque(true);
+        destinoLabel.setBounds(700, 650, 500, 50);
+        componentes.add(destinoLabel);
+        componentesEspecificos.add(destinoLabel);
+        frame.getContentPane().add(destinoLabel);
+        frame.repaint();
+
+        JTextField destinoTextField = new JTextField("");
+        destinoTextField.setFont(BUTTONFONT);
+        destinoTextField.setForeground(Color.RED);
+        destinoTextField.setBackground(Color.BLACK);
+        destinoTextField.setBounds(700, 720, 500, 50);
+        componentes.add(destinoTextField);
+        componentesEspecificos.add(destinoTextField);
+        frame.getContentPane().add(destinoTextField);
+        frame.repaint();
+
+        JButton guardarDestinoBtn = new JButton("Guardar");
+        guardarDestinoBtn.setFont(BUTTONFONT);
+        guardarDestinoBtn.setForeground(Color.RED);
+        guardarDestinoBtn.setBackground(Color.BLACK);
+        guardarDestinoBtn.setBounds(700, 810, 300, 50);
+        componentes.add(guardarDestinoBtn);
+        componentesEspecificos.add(guardarDestinoBtn);
+        frame.getContentPane().add(guardarDestinoBtn);
+        frame.repaint();
+
+        eventLabel.setText("Destinacion: No Establecida");
+        guardarDestinoBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String destino = destinoTextField.getText();
+                if (!destino.isEmpty()) {
+                    eventLabel.setText("Destinacion: " + destino);
+                } else {
+                    eventLabel.setText("Destino guardado: Ninguno");
+                }
+            }
+        });
+    }
     private String formatearEmisora(double emisora) {
         if (radio.getFrecuencia() == 1) {
             return String.format("AM %.0f", emisora);
@@ -537,7 +642,7 @@ public class vistaRadio {
     private void actualizarInterfaz() {
         for (Component c : componentes) {
             if (c instanceof JLabel && ((JLabel) c).getText().startsWith(radio.frecuenciaConvertida())) {
-                ((JLabel) c).setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+                ((JLabel) c).setText(radio.frecuenciaConvertida() + " Esta sonando: ");
             }
         }
     }
