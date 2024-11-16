@@ -42,7 +42,7 @@ public class vistaRadio {
         JLabel modeLbl = new JLabel("Modo actual: " + radio.getModoConvertido());
         modeLbl.setFont(STATUSFONT);
         modeLbl.setForeground(Color.RED);
-        modeLbl.setBounds(660, 200, 800, 141);
+        modeLbl.setBounds(600, 200, 900, 141);
 		modeLbl.setBackground(Color.BLACK);
 		modeLbl.setOpaque(true);
         componentes.add(modeLbl);
@@ -75,7 +75,7 @@ public class vistaRadio {
 				eventLabel.setOpaque(true); 
 			}
 		});
-		
+
 		JButton nextStation = new JButton(">");
         nextStation.setFont(BUTTONFONT);
         nextStation.setContentAreaFilled(true);
@@ -142,12 +142,7 @@ public class vistaRadio {
 			public void actionPerformed(ActionEvent e) {
 				radio.setModo(1);
 				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
-				modeLbl.setFont(STATUSFONT);
-				modeLbl.setForeground(Color.RED);
-				modeLbl.setBounds(660, 200, 800, 141);
-				modeLbl.setBackground(Color.BLACK);
-				modeLbl.setOpaque(true);
-				componentes.add(modeLbl);
+				modoRadio(eventLabel);
 			}
 		});
 		
@@ -162,12 +157,7 @@ public class vistaRadio {
 			public void actionPerformed(ActionEvent e) {
 				radio.setModo(2);
 				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
-				modeLbl.setFont(STATUSFONT);
-				modeLbl.setForeground(Color.RED);
-				modeLbl.setBounds(660, 200, 800, 141);
-				modeLbl.setBackground(Color.BLACK);
-				modeLbl.setOpaque(true);
-				componentes.add(modeLbl);
+                modoReproduccion(eventLabel);
 			}
 		});
 		
@@ -182,11 +172,6 @@ public class vistaRadio {
 			public void actionPerformed(ActionEvent e) {
 				radio.setModo(4);
 				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
-				modeLbl.setFont(STATUSFONT);
-				modeLbl.setForeground(Color.RED);
-				modeLbl.setBounds(660, 200, 800, 141);
-				modeLbl.setBackground(Color.BLACK);
-				modeLbl.setOpaque(true);
 				componentes.add(modeLbl);
 			}
 		});
@@ -202,12 +187,6 @@ public class vistaRadio {
 			public void actionPerformed(ActionEvent e) {
 				radio.setModo(3);
 				modeLbl.setText("Modo actual: " + radio.getModoConvertido());
-				modeLbl.setFont(STATUSFONT);
-				modeLbl.setForeground(Color.RED);
-				modeLbl.setBounds(660, 200, 800, 141);
-				modeLbl.setBackground(Color.BLACK);
-				modeLbl.setOpaque(true);
-				componentes.add(modeLbl);
 			}
 		});
 		
@@ -245,6 +224,37 @@ public class vistaRadio {
 		});
         frame.getContentPane().add(onBtn);
         frame.getContentPane().repaint();
+    }
+
+    public void modoReproduccion(JLabel eventLabel){
+        JLabel playlistsLbl = new JLabel("Listas de reproducción:");
+        playlistsLbl.setFont(BUTTONFONT);
+        playlistsLbl.setForeground(Color.RED);
+        playlistsLbl.setBackground(Color.BLACK);
+        playlistsLbl.setBounds(660, 800, 800, 141);
+        componentes.add(playlistsLbl);
+        
+    }
+
+    public void modoRadio(JLabel eventLabel){
+        //Boton am y fm
+		JButton am = new JButton("AM/FM");
+		am.setFont(BUTTONFONT);
+		am.setContentAreaFilled(true);
+		am.setForeground(Color.RED);
+		am.setBounds(1300,375,200,100);
+		componentes.add(am);
+		am.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(radio.getFrecuencia()==1){ //Se cambia de am a fm 
+					radio.amFm(false);
+				}
+				else{
+					radio.amFm(true);
+				}
+				eventLabel.setText(radio.frecuenciaConvertida()+" | Esta sonando: ");
+			}
+		});
     }
 
     private static Font cargarFuente(String fontPath, int style, int size) {
