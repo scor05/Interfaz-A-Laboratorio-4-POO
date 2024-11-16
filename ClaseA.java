@@ -3,6 +3,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClaseA implements IRadio {
     private boolean encendido;
@@ -28,6 +29,49 @@ public class ClaseA implements IRadio {
         this.speakerAuri = false;
         this.contactos = new ArrayList<>();
         this.viaje = "";
+
+        ArrayList<String> rockSongs = new ArrayList<>(List.of(
+            "Bohemian Rhapsody - Queen",
+            "Stairway to Heaven - Led Zeppelin",
+            "Hotel California - Eagles",
+            "Sweet Child O' Mine - Guns N' Roses",
+            "Smoke on the Water - Deep Purple",
+            "Back in Black - AC/DC",
+            "Livin' on a Prayer - Bon Jovi",
+            "Comfortably Numb - Pink Floyd",
+            "Wonderwall - Oasis",
+            "November Rain - Guns N' Roses"
+        ));
+
+        ArrayList<String> hipHopSongs = new ArrayList<>(List.of(
+            "Lose Yourself - Eminem",
+            "Juicy - The Notorious B.I.G.",
+            "N.Y. State of Mind - Nas",
+            "HUMBLE. - Kendrick Lamar",
+            "SICKO MODE - Travis Scott",
+            "God's Plan - Drake",
+            "99 Problems - JAY-Z",
+            "C.R.E.A.M. - Wu-Tang Clan",
+            "Alright - Kendrick Lamar",
+            "Stan - Eminem"
+        ));
+
+        ArrayList<String> classicalSongs = new ArrayList<>(List.of(
+            "Für Elise - Ludwig van Beethoven",
+            "Clair de Lune - Claude Debussy",
+            "The Four Seasons: Spring - Antonio Vivaldi",
+            "Swan Lake Theme - Pyotr Ilyich Tchaikovsky",
+            "Canon in D - Johann Pachelbel",
+            "Symphony No. 9 (Ode to Joy) - Ludwig van Beethoven",
+            "Requiem: Lacrimosa - Wolfgang Amadeus Mozart",
+            "Prelude in C Major - Johann Sebastian Bach",
+            "Moonlight Sonata - Ludwig van Beethoven",
+            "Boléro - Maurice Ravel"
+        ));
+
+        this.playlists.add(rockSongs);
+        this.playlists.add(hipHopSongs);
+        this.playlists.add(classicalSongs);
     }
 
     @Override
