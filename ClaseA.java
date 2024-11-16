@@ -21,7 +21,7 @@ public class ClaseA implements IRadio {
     public ClaseA() {
         this.encendido = false;
         this.volumen = 0;
-        this.modo = 1;
+        this.modo = 0;
         this.frecuencia = 0;
         this.emisora = 0;
         this.playlists = new ArrayList<>();
@@ -31,42 +31,42 @@ public class ClaseA implements IRadio {
         this.viaje = "";
 
         ArrayList<String> rockSongs = new ArrayList<>(List.of(
-            "Bohemian Rhapsody - Queen",
-            "Stairway to Heaven - Led Zeppelin",
-            "Hotel California - Eagles",
-            "Sweet Child O' Mine - Guns N' Roses",
-            "Smoke on the Water - Deep Purple",
-            "Back in Black - AC/DC",
-            "Livin' on a Prayer - Bon Jovi",
-            "Comfortably Numb - Pink Floyd",
-            "Wonderwall - Oasis",
-            "November Rain - Guns N' Roses"
+            "Bohemian Rhapsody - Queen | Duración: 5:55",
+            "Stairway to Heaven - Led Zeppelin | Duración: 8:02",
+            "Hotel California - Eagles | Duración: 6:30",
+            "Sweet Child O' Mine - Guns N' Roses | Duración: 5:56",
+            "Back in Black - AC/DC | Duración: 4:15",
+            "Smoke on the Water - Deep Purple | Duración: 5:40",
+            "Livin' on a Prayer - Bon Jovi | Duración: 4:09",
+            "Born to Run - Bruce Springsteen | Duración: 4:31",
+            "Purple Haze - Jimi Hendrix | Duración: 2:50",
+            "Paranoid - Black Sabbath | Duración: 2:48"
         ));
 
         ArrayList<String> hipHopSongs = new ArrayList<>(List.of(
-            "Lose Yourself - Eminem",
-            "Juicy - The Notorious B.I.G.",
-            "N.Y. State of Mind - Nas",
-            "HUMBLE. - Kendrick Lamar",
-            "SICKO MODE - Travis Scott",
-            "God's Plan - Drake",
-            "99 Problems - JAY-Z",
-            "C.R.E.A.M. - Wu-Tang Clan",
-            "Alright - Kendrick Lamar",
-            "Stan - Eminem"
+            "Lose Yourself - Eminem | Duración: 5:26",
+            "Juicy - The Notorious B.I.G. | Duración: 5:02",
+            "N.Y. State of Mind - Nas | Duración: 4:54",
+            "C.R.E.A.M. - Wu-Tang Clan | Duración: 4:12",
+            "California Love - 2Pac | Duración: 4:45",
+            "HUMBLE. - Kendrick Lamar | Duración: 2:57",
+            "99 Problems - Jay-Z | Duración: 3:54",
+            "Still D.R.E. - Dr. Dre | Duración: 4:34",
+            "Sicko Mode - Travis Scott | Duración: 5:12",
+            "God's Plan - Drake | Duración: 3:18"
         ));
 
         ArrayList<String> classicalSongs = new ArrayList<>(List.of(
-            "Für Elise - Ludwig van Beethoven",
-            "Clair de Lune - Claude Debussy",
-            "The Four Seasons: Spring - Antonio Vivaldi",
-            "Swan Lake Theme - Pyotr Ilyich Tchaikovsky",
-            "Canon in D - Johann Pachelbel",
-            "Symphony No. 9 (Ode to Joy) - Ludwig van Beethoven",
-            "Requiem: Lacrimosa - Wolfgang Amadeus Mozart",
-            "Prelude in C Major - Johann Sebastian Bach",
-            "Moonlight Sonata - Ludwig van Beethoven",
-            "Boléro - Maurice Ravel"
+            "Symphony No. 9 - Beethoven | Duración: 12:33",
+            "The Four Seasons: Spring - Vivaldi | Duración: 3:30",
+            "Clair de Lune - Debussy | Duración: 5:15",
+            "Canon in D - Pachelbel | Duración: 6:03",
+            "Eine kleine Nachtmusik - Mozart | Duración: 5:52",
+            "Swan Lake Theme - Tchaikovsky | Duración: 8:47",
+            "The Planets: Jupiter - Holst | Duración: 7:12",
+            "Boléro - Ravel | Duración: 15:10",
+            "Carmina Burana: O Fortuna - Orff | Duración: 2:48",
+            "Moonlight Sonata - Beethoven | Duración: 14:15"
         ));
 
         this.playlists.add(rockSongs);
@@ -207,9 +207,11 @@ public class ClaseA implements IRadio {
 		else if(modo==3){
 			return "Telefono";
 		}
-		else{
+		else if(modo==4){
 			return "Productividad";
-		}
+		}else{
+            return "Ninguno";
+        }
 	}
 	
 	public String frecuenciaConvertida(){
