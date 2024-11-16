@@ -167,6 +167,16 @@ public class ClaseA implements IRadio {
 			return "Productividad";
 		}
 	}
+	
+	public String frecuenciaConvertida(){
+		if(frecuencia ==1){
+			return "AM";
+		}
+		else{	
+			return "FM";
+		}
+		
+	}
 
     @Override
     public String toString() {

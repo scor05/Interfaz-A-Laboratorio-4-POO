@@ -42,12 +42,35 @@ public class vistaRadio {
 		modeLbl.setOpaque(true);
         componentes.add(modeLbl);
 
-        JLabel eventLabel = new JLabel("Llamando a: ");
+        JLabel eventLabel = new JLabel(radio.frecuenciaConvertida()+" | Esta sonando: ");
         eventLabel.setFont(EVENTFONT);
         eventLabel.setForeground(Color.RED);
         eventLabel.setBackground(Color.BLACK);
         eventLabel.setOpaque(true); 
-
+		
+		//Boton am y fm
+		JButton am = new JButton("AM/FM");
+		am.setFont(BUTTONFONT);
+		am.setContentAreaFilled(true);
+		am.setForeground(Color.RED);
+		am.setBounds(1300,375,200,100);
+		componentes.add(am);
+		am.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(radio.getFrecuencia()==1){ //Se cambia de am a fm 
+					radio.amFm(false);
+				}
+				else{
+					radio.amFm(true);
+				}
+				eventLabel.setText(radio.frecuenciaConvertida()+" | Esta sonando: ");
+				eventLabel.setFont(EVENTFONT);
+				eventLabel.setForeground(Color.RED);
+				eventLabel.setBackground(Color.BLACK);
+				eventLabel.setOpaque(true); 
+			}
+		});
+		
         JScrollPane eventTextPane = new JScrollPane(eventLabel);
 		eventTextPane.setBounds(665, 359, 588, 125);
 		componentes.add(eventTextPane);
