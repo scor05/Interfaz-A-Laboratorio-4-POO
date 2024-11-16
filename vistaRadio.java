@@ -17,6 +17,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.border.EmptyBorder;
+
 public class vistaRadio {
     private ClaseA radio;
     private ArrayList<Component> componentes = new ArrayList<>();
@@ -53,7 +58,7 @@ public class vistaRadio {
 		am.setFont(BUTTONFONT);
 		am.setContentAreaFilled(true);
 		am.setForeground(Color.RED);
-		am.setBounds(1300,375,200,100);
+		am.setBounds(1350,375,200,100);
 		componentes.add(am);
 		am.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -70,6 +75,58 @@ public class vistaRadio {
 				eventLabel.setOpaque(true); 
 			}
 		});
+		
+		JButton nextStation = new JButton(">");
+        nextStation.setFont(BUTTONFONT);
+        nextStation.setContentAreaFilled(true);
+        nextStation.setForeground(Color.RED);
+        nextStation.setBounds(1300, 300, 80, 60);
+        componentes.add(nextStation);
+        nextStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                radio.siguienteEmisora();
+                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+            }
+        });
+
+        JButton prevStation = new JButton("<");
+        prevStation.setFont(BUTTONFONT);
+        prevStation.setContentAreaFilled(true);
+        prevStation.setForeground(Color.RED);
+        prevStation.setBounds(1200, 300, 80, 60);
+        componentes.add(prevStation);
+        prevStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                radio.anteriorEmisora();
+                eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+            }
+        });
+
+        // Botones para guardar y cargar emisoras
+        JButton saveStation = new JButton("Guardar");
+        saveStation.setFont(BUTTONFONT);
+        saveStation.setContentAreaFilled(true);
+        saveStation.setForeground(Color.RED);
+        saveStation.setBounds(460, 375, 180, 60);
+        componentes.add(saveStation);
+        saveStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                radio.guardarEmisora();
+            }
+        });
+
+        JButton loadStation = new JButton("Cargar");
+        loadStation.setFont(BUTTONFONT);
+        loadStation.setContentAreaFilled(true);
+        loadStation.setForeground(Color.RED);
+        loadStation.setBounds(460, 450, 180, 60);
+        componentes.add(loadStation);
+        loadStation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarDialogoEmisoras(frame);
+            }
+        });
+		
 		
         JScrollPane eventTextPane = new JScrollPane(eventLabel);
 		eventTextPane.setBounds(665, 359, 588, 125);
@@ -200,6 +257,91 @@ public class vistaRadio {
         } catch (Exception e) {
             e.printStackTrace();
             return new Font("Serif", style, size);
+        }
+    }
+	
+	private void mostrarDialogoEmisoras(JFrame parentFrame) {
+        if (radio.getEmisorasGuardadas().isEmpty()) {
+            JOptionPane.showMessageDialog(parentFrame, 
+                "No hay emisoras guardadas", 
+                "Error", 
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Crear diálogo personalizado
+        JDialog dialog = new JDialog(parentFrame, "Seleccionar Emisora", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(300, 400);
+        dialog.setLocationRelativeTo(parentFrame);
+
+        // Panel principal con scroll
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        mainPanel.setBackground(Color.BLACK);
+
+        // Título
+        JLabel titleLabel = new JLabel("Emisoras Guardadas");
+        titleLabel.setFont(BUTTONFONT);
+        titleLabel.setForeground(Color.RED);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(titleLabel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        // Crear botones para cada emisora guardada
+        for (Double emisora : radio.getEmisorasGuardadas()) {
+            JButton emisoraBtn = new JButton(formatearEmisora(emisora));
+            emisoraBtn.setFont(BUTTONFONT);
+            emisoraBtn.setForeground(Color.RED);
+            emisoraBtn.setBackground(Color.BLACK);
+            emisoraBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            emisoraBtn.setMaximumSize(new Dimension(200, 50));
+            
+            emisoraBtn.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    radio.cargarEmisoraEspecifica(emisora);
+                    actualizarInterfaz();
+                    dialog.dispose();
+                }
+            });
+
+            mainPanel.add(emisoraBtn);
+            mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
+
+        // Botón de cerrar
+        JButton closeButton = new JButton("Cerrar");
+        closeButton.setFont(BUTTONFONT);
+        closeButton.setForeground(Color.RED);
+        closeButton.setBackground(Color.BLACK);
+        closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        closeButton.addActionListener(e -> dialog.dispose());
+        
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        mainPanel.add(closeButton);
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setBackground(Color.BLACK);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        dialog.add(scrollPane);
+
+        dialog.setVisible(true);
+    }
+
+    private String formatearEmisora(double emisora) {
+        if (radio.getFrecuencia() == 1) {
+            return String.format("AM %.0f", emisora);
+        } else {
+            return String.format("FM %.1f", emisora);
+        }
+    }
+
+    private void actualizarInterfaz() {
+        for (Component c : componentes) {
+            if (c instanceof JLabel && ((JLabel) c).getText().startsWith(radio.frecuenciaConvertida())) {
+                ((JLabel) c).setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
+            }
         }
     }
 }
