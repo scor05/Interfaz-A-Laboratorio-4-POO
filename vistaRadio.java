@@ -435,7 +435,7 @@ public class vistaRadio {
         loadStation.setBounds(460, 450, 180, 60);
         loadStation.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarDialogoEmisoras(frame);
+                mostrarDialogoEmisoras(frame, eventLabel);
             }
         });
         componentes.add(loadStation);
@@ -457,7 +457,7 @@ public class vistaRadio {
         }
     }
 	
-	private void mostrarDialogoEmisoras(JFrame parentFrame) {
+	private void mostrarDialogoEmisoras(JFrame parentFrame, JLabel eventLabel) {
         if (radio.getEmisorasGuardadas().isEmpty()) {
             JOptionPane.showMessageDialog(parentFrame, 
                 "No hay emisoras guardadas", 
@@ -498,6 +498,7 @@ public class vistaRadio {
                 public void actionPerformed(ActionEvent e) {
                     radio.cargarEmisoraEspecifica(emisora);
                     actualizarInterfaz();
+                    eventLabel.setText(radio.frecuenciaConvertida() + " | Esta sonando: ");
                     dialog.dispose();
                 }
             });
